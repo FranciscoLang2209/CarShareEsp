@@ -4,15 +4,22 @@
 
 #include "mqtt_actions.h"       //  Prototypes of functions whose code are here
 #include "mqtt.h"
+#include "globals.h"
+
+
 
 void 
 new_session(int origin, char *msg) {
     Serial.println("New session");
+    HAS_SESSION = true;
+    digitalWrite(ledPin, HIGH);
 }
 
 void
 stop_session(int origin, char *msg) {
     Serial.println("Stop session");
+    HAS_SESSION = false;
+    digitalWrite(ledPin, LOW);
 }
 
 void
@@ -29,25 +36,23 @@ publish_data(Data data) {
     snprintf(locLonStr, sizeof(locLonStr), "%.6f", data.loc_lng);
     snprintf(locLatStr, sizeof(locLatStr), "%.6f", data.loc_lat);
     snprintf(disStr, sizeof(disStr), "%.2f", data.distance);
-    snprintf(altStr, sizeof(altStr), "%.2f", data.alt);
-    snprintf(p_altStr, sizeof(p_altStr), "%.2f", data.p_altitude);
-    snprintf(calStr, sizeof(calStr), "%.2f", data.calories);
 
     JsonDocument jsonData;
     jsonData["speed"] = speedStr;
     jsonData["loc"]["lat"] = locLatStr;
     jsonData["loc"]["lng"] = locLonStr;
     jsonData["distance"] = disStr;
-    jsonData["p_altitude"] = p_altStr;
-    jsonData["calories"] = calStr;
-    jsonData["altitude"] = altStr;
 
     String output;
     serializeJson(jsonData, output);
     do_publish("data/live", output.c_str());
 }
 
-void setWeight(int origin, char *msg)
-{
-    int value = atoi(msg);
+void
+publish_state() {
+    bool ledState = digitalRead(ledPin) == HIGH ? true : false;
+
+    JsonDocument jsonState;
+    jsonState["session"] = HAS_SESSION;
+    jsonState["led"] = ledState;
 }

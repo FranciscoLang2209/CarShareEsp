@@ -25,7 +25,6 @@ static const topic_t topics[] =
 {
     {   "start", new_session },
     {   "stop", stop_session },
-    {   "weight", setWeight  },
     { NULL }
 };
 
@@ -35,7 +34,6 @@ static const char *subs[] =
     "#",
 #elif (SUB_LIST==1)
     "session/#",
-    "set/weight",
 #else
     #error "Bad SUB_LIST symbol, out of range"
 #endif
@@ -47,7 +45,7 @@ static const char *subs[] =
 #define subs_string(buf)        sprintf(buf,"%s/%s",        MAIN_NAME,SUB_NAME)
 
 #if (MQTT==0)                                       
-    #define BROKER_NAME "ec2-18-232-20-96.compute-1.amazonaws.com"         //  Mosquitto in local network
+    #define BROKER_NAME "ec2-100-25-245-208.compute-1.amazonaws.com"         //  Mosquitto in local network
     #define BROKER_PORT 1883
     #define BROKER_USER ""
     #define BROKER_PASS ""
@@ -66,3 +64,4 @@ static const char *subs[] =
 #endif
 
 #endif      //  ends  __MQTT_DEF_H__
+ 

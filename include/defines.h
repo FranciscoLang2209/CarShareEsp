@@ -7,8 +7,6 @@ struct Data
   double loc_lat;
   double loc_lng;
   double distance;
-  double alt;
-  double p_altitude;
   int satelites;
 };
 
